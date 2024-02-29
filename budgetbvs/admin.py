@@ -222,7 +222,11 @@ class LogStepSendMailBVSAdmin(admin.ModelAdmin):
             # else:
             #     LogStepSendMailBVS.objects.filter(
             #         RefNo=object.RefNo, StepID=object.StepID).delete()
-            LogStepSendMailBVS.objects.filter(RefNo=object.RefNo, StepID__gte=stepTotal).delete()
+            try:
+                LogStepSendMailBVS.objects.filter(RefNo=object.RefNo, StepID__gte=stepTotal).delete()
+            except Exception as e:
+                print(e)
+                
             urls = f"http://110.164.218.143:11227/web_sevice_bvs/web_Approve.aspx?EMP_ID={(prHead.FCCREATEBY).strip()}&P={(object.RefNo).strip()}&STEP={stepTotal}&BOOK=1"
             return HttpResponseRedirect(urls)
         
