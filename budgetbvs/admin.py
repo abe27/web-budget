@@ -213,11 +213,12 @@ class LogStepSendMailBVSAdmin(admin.ModelAdmin):
     
     def response_change(self, request, object):
         if "_resend-mail" in request.POST:
-            print(f"RefNo.: {object.RefNo} Step: {object.StepID} Step Next: {stepTotal}")
             stepTotal = int(object.StepID) - 1
             prHead = PRHeadBVS.objects.get(RefNo=object.RefNo)
             prHead.StatusApp = stepTotal
             prHead.save()
+
+            print(f"RefNo.: {object.RefNo} Step: {object.StepID} Step Next: {stepTotal}")
             # if stepTotal == 0:
             #     LogStepSendMailBVS.objects.filter(RefNo=object.RefNo).delete()
             # else:
